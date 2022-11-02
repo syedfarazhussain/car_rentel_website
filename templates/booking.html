@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="page-heading about-heading header-text" style="background-image: url({% static 'assets/images/heading-6-1920x500.jpg' %});">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-content">
+            <h4>welcome to car booking </h4>
+            <h2>Booking</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<br><br>
+  <form action="{% url 'search_results' %}" method="GET" class="navbar-form navbar-right" role="search">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Search Car" name="search" value="{{ request.GET.search }}">
+    </div>
+    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span> Search</button>
+  </form>
+
+  <div class="products">
+    <div class="container">
+      <div class="row">
+      {% for car in cars_with_pagination %}
+        <div class="col-md-4">
+          <div class="product-item">
+            <img src="{{ car.image.url }}" class="img-responsive thumbnail " width="300" alt="img">
+
+            <div class="down-content">
+              <h4>Car: {{ car.car_name }}</h4>
+
+              <h6><small>from</small> ${{ car.cost_par_day }} <small>per Day</small></h6>
+
+              <p>{{ car.content }}</p>
+
+              <small>
+                  <strong title="passegengers"><i class="fa fa-user"></i> {{ car.num_of_seats }}</strong> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <strong title="luggages"><i class="fa fa-briefcase"></i> {{ car.num_of_luggages }}</strong> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <strong title="doors"><i class="fa fa-sign-out"></i> {{ car.num_of_doors }}</strong> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <strong title="transmission"><i class="fa fa-cog"></i> {{ car.car_drive_type }}</strong>
+              </small>
+              
+              <span>
+                <button type="button" data-toggle="modal" class="select_car_button" data-target="#booking_form_model" data-carID="{{ car.id }}">Book Now</button>
+              </span>
+            </div>
+            <span>
+              {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                  <a href="{% url 'CarUpdateView' car.id %}" class="btn btn-outline-dark" role="button" aria-pressed="true">Update</a>
+                  <a href="{% url 'CarDeleteView' car.id %}" class="btn btn-outline-dark" role="button" aria-pressed="true">Delete</a>
+                {% endif %}
+              {% endif %}
+            </span>
+          </div>
+        </div>
+       
+        {% endfor %}
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="booking_form_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="contact-form">
+            <form action="{% url 'car_booking' %}" method="POST">
+              {% csrf_token %}
+                <div class="row">
+                  <div class="col-md-6">
+                    <fieldset>
+                      <input type="text" class="form-control" placeholder="Pick Up location" required="" name="pick_up_location">
+                      {% render_field form.pick_up_location class="form-control" rows="3" %}
+                    </fieldset>
+                     </div>
+
+                     <div class="col-md-6">
+                        <fieldset>
+                          <input type="text" class="form-control" placeholder="Return location" required="" name="return_location">
+                          {% render_field form.return_location class="form-control" rows="3" %}
+                        </fieldset>
+                     </div>
+                </div>
+
+                <div class="row">
+                     <div class="col-md-6">
+                      <fieldset>
+                        <label for="Pick_up_date_time">Pick_up_date_time:</label>
+                        <input type="datetime-local" class="form-control" required="" name="Pick_up_date_time">
+                        {% render_field form.Pick_up_date_time class="form-control" rows="3" %}
+                      </fieldset>
+                     </div>
+
+                     <div class="col-md-6">
+                        <fieldset>
+                          <label for="question">Return date/time:</label>
+                          <input type="datetime-local" class="form-control" required="" name="return_date_time">
+                          {% render_field form.return_date_time class="form-control" rows="3" %}
+                        </fieldset>
+                     </div>
+                </div>
+                <input type="text" class="form-control" placeholder="Enter full name" required="" name="full_name">
+                {% render_field form.full_name class="form-control" rows="3" %}
+                <div class="row">
+                     <div class="col-md-6">
+                        <fieldset>
+                          <input type="text" class="form-control" placeholder="Enter email address" required="" name="email_address">
+                          {% render_field form.email_address class="form-control" rows="3" %}
+                        </fieldset>
+                     </div>
+                     <div class="col-md-6">
+                        <fieldset>
+                          <input type="text" class="form-control" placeholder="Enter phone" required="" name="phone">
+                          {% render_field form.phone class="form-control" rows="3" %}
+                        </fieldset>
+                     </div>
+                     <div class="col-md-6">
+                        <fieldset>
+                          <input type="hidden" class="form-control" name="status">
+                          {% render_field form.status class="form-control" rows="3" %}
+                        </fieldset>
+                      </div>
+                    <input type="hidden" name="car" id="car_id_input" value=""/>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Book Now</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  <div class="pagination">
+    <span class="step-links">
+        {% if cars_with_pagination.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ cars_with_pagination.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ cars_with_pagination.number }} of {{ cars_with_pagination.paginator.num_pages }}.
+        </span>
+
+        {% if cars_with_pagination.has_next %}
+            <a href="?page={{ cars_with_pagination.next_page_number }}">next</a>
+            <a href="?page={{ cars_with_pagination.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}

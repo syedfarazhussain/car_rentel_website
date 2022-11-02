@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Update Order{% endblock %}
+
+{% block content %}
+
+
+<br><br>
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Update Order</h3>
+            </div>
+            <br>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="form-label" for="textAreaExample">pick_up_location</label>
+                                {% render_field form.pick_up_location class="form-control" rows="3" %}
+                              </div>
+                              <div class="form-group">
+                                <label class="form-label" for="textAreaExample">return_location</label>
+                                {% render_field form.return_location class="form-control" rows="3" %}
+                              </div>
+                              <div class="form-group">
+                                <label class="form-label" for="textAreaExample">Pick_up_date_time</label>
+                                {% render_field form.Pick_up_date_time class="form-control" rows="3" %}
+                              </div>
+                              <div class="form-group">
+                                <label class="form-label" for="textAreaExample">return_date_time</label> 
+                                {% render_field form.return_date_time class="form-control" rows="3" %}
+                              </div>
+                              <div class="form-group">
+                                <label class="form-label" for="textAreaExample">full_name</label>  
+                                {% render_field form.full_name class="form-control" rows="3" %}
+                              </div>
+                              <div class="form-group">
+                                <label class="form-label" for="textAreaExample">car</label> 
+                                {% render_field form.car class="form-control" rows="3" %}
+                              </div>
+                              <div class="form-group">
+                                <label class="form-label" for="textAreaExample">email_address</label>
+                                {% render_field form.email_address class="form-control" rows="3" %}
+                              </div>
+                              <div class="form-group">
+                                <label class="form-label" for="textAreaExample">phone</label>
+                                {% render_field form.phone class="form-control" rows="3" %}
+                              </div>
+                            <div class="form-group">
+                                <label for="question">status</label>
+                                {% render_field form.status class="form-control" rows="3" %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <hr />
+                        <div class="col-lg-4">
+                            <button type="submit" class="btn btn-info">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

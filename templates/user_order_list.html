@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %} Order List {% endblock %}
+{% block content %}
+
+<br><br><br><br>
+<!-- Table  -->
+<table class="table table-bordered">
+  <!-- Table head -->
+  <thead>
+    <tr>
+      <th>Order Id</th>
+      <th>Username</th>
+      <th>Car Name</th>
+      <th>Car Price</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <!-- Table head -->
+
+  <!-- Table body -->
+{% for order in order_with_pagination %}
+  <tbody>
+    <tr>
+      <td>{{order.id}}</td>
+      <td>{{order.user}}</td>
+      <td>{{order.car}}</td>
+      <td>{{order.car.cost_par_day}}</td>
+      <td><a href="{% url 'order_detail' order.id %}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Details</a></td>
+    </tr>
+  </tbody>
+{% endfor %}
+  <!-- Table body -->
+</table>
+<!-- Table  -->
+<div class="pagination">
+  <span class="step-links">
+      {% if order_with_pagination.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ order_with_pagination.previous_page_number }}">previous</a>
+      {% endif %}
+
+      <span class="current">
+          Page {{ order_with_pagination.number }} of {{ order_with_pagination.paginator.num_pages }}.
+      </span>
+
+      {% if order_with_pagination.has_next %}
+          <a href="?page={{ order_with_pagination.next_page_number }}">next</a>
+          <a href="?page={{ order_with_pagination.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+  </span>
+</div>
+
+{% endblock %}

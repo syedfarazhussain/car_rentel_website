@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %} Order Message {% endblock %}
+{% block content %}
+
+<br><br><br><br>
+{% if check_car %}
+  <div class="alert alert-warning">
+      <strong>Sorry</strong> This car is already booked on this date: {{pick_date}}
+      and car will be available after this date {{return_date}}.
+    </div>
+    <br>
+    <h4>Back to Booking page: </h4><br><a class="btn btn-primary" href="{% url 'cars_detail' %}" role="button">Book Other Car</a>
+{% else %}
+  <div class="alert alert-success">
+    <strong>Success!</strong> your selected car {{car}} is successfully booked.
+  </div>
+  <h2>Back to Home Page </h2><br><a class="btn btn-primary" href="{% url 'home' %}" role="button">Home</a>
+{% endif %}
+
+{% endblock %}
