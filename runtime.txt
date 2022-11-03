@@ -1,2 +1,0 @@
-python --version
-eg. Python 3.7.3
