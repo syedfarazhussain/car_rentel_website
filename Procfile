@@ -1,0 +1,1 @@
+web: gunicorn car_rentel_website.wsgi --log-file -
