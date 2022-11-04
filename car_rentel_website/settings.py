@@ -28,7 +28,7 @@ SECRET_KEY = 'v_ldkj9h=po0x$$rl@sorbo+vww1%(5&#fl8k95bhnup)^#lnl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['car-rentel.herukoapp.com']
+ALLOWED_HOSTS = ['car-rentel.herokuapp.com']
 
 # Application definition
 
